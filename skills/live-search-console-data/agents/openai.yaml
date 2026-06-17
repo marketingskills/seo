@@ -1,0 +1,4 @@
+interface:
+  display_name: "Live Search Console Data"
+  short_description: "Live GSC/GA4 data in 30 seconds — no Google Cloud setup"
+  default_prompt: "Use $live-search-console-data to get live Search Console and GA4 data. On first use, run one helper login/setup command first and wait for browser OAuth to complete."

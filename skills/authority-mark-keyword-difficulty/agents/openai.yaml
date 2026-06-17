@@ -1,0 +1,4 @@
+interface:
+  display_name: "Authority Mark Keyword Difficulty"
+  short_description: "SERP authority watermark from Ahrefs DR"
+  default_prompt: "Use $authority-mark-keyword-difficulty to evaluate whether my domain can compete for this keyword."

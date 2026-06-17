@@ -1,0 +1,1233 @@
+openapi: 3.1.0
+info:
+  title: Refresh Agent API
+  version: "0.1.0"
+  description: |
+    Thin gateway for GA4 + Google Search Console data, secured per client via API keys.
+
+    GraphQL is also available:
+    - Endpoint: `/graphql` (POST with `X-API-Key`; GET shows the Playground)
+    - SDL: `/graphql/schema`
+servers:
+  - url: https://refreshagent.com
+    description: Replace with deployed host
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  schemas:
+    CacheStatus:
+      type: object
+      properties:
+        cached:
+          type: boolean
+        age_seconds:
+          type: integer
+          format: int64
+          nullable: true
+    ClientSite:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        ga4_property_id:
+          type: string
+          nullable: true
+        ga4_property_name:
+          type: string
+          nullable: true
+        gsc_site_url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+    CreateClientSiteRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          description: Display name for the client/site.
+        ga4_property_id:
+          type: string
+          nullable: true
+          description: GA4 property ID (e.g. properties/123456789).
+        ga4_property_name:
+          type: string
+          nullable: true
+        gsc_site_url:
+          type: string
+          nullable: true
+          description: Search Console site URL, URL-encoded if needed.
+    StatWithChange:
+      type: object
+      properties:
+        value:
+          type: number
+          format: double
+        change_percent:
+          type: number
+          format: double
+    Ga4Stats:
+      type: object
+      properties:
+        organic_sessions:
+          $ref: '#/components/schemas/StatWithChange'
+        engaged_sessions:
+          $ref: '#/components/schemas/StatWithChange'
+        conversions:
+          $ref: '#/components/schemas/StatWithChange'
+        revenue:
+          $ref: '#/components/schemas/StatWithChange'
+    Ga4PropertySummary:
+      type: object
+      properties:
+        property:
+          type: string
+          description: Resource name (e.g. properties/123)
+        display_name:
+          type: string
+          description: Human readable name
+        stats:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Ga4Stats'
+    GscSite:
+      type: object
+      properties:
+        site_url:
+          type: string
+          description: The URL of the site (e.g. https://example.com/)
+        sitemaps_count:
+          type: integer
+          format: int64
+          nullable: true
+    Ga4Summary:
+      type: object
+      properties:
+        active_users:
+          type: string
+        sessions:
+          type: string
+        sessions_prev_30d:
+          type: string
+        sessions_last_7d:
+          type: string
+        sessions_prev_7d:
+          type: string
+        sessions_timeseries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ga4SessionPoint'
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    Ga4OrganicSessionsResponse:
+      type: object
+      properties:
+        property_id:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        compare_start_date:
+          type: string
+          format: date
+        compare_end_date:
+          type: string
+          format: date
+        sessions_current:
+          type: number
+          format: double
+        sessions_previous:
+          type: number
+          format: double
+        sessions_change_percent:
+          type: number
+          format: double
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    Ga4SessionPoint:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        sessions:
+          type: number
+          format: double
+    Ga4ConversionsResponse:
+      type: object
+      properties:
+        conversions_last_30d:
+          type: string
+        conversions_prev_30d:
+          type: string
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    Ga4LandingPageRow:
+      type: object
+      properties:
+        landing_page:
+          type: string
+        sessions:
+          type: number
+          format: double
+        conversions:
+          type: number
+          format: double
+        conversion_rate:
+          type: number
+          format: double
+    Ga4LandingPagesResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ga4LandingPageRow'
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    Ga4TopEventRow:
+      type: object
+      properties:
+        event_name:
+          type: string
+        event_count:
+          type: number
+          format: double
+        conversions:
+          type: number
+          format: double
+    Ga4TopEventsResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ga4TopEventRow'
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    ScSummary:
+      type: object
+      properties:
+        clicks_30d:
+          type: number
+          format: double
+        clicks_prev_30d:
+          type: number
+          format: double
+        clicks_7d:
+          type: number
+          format: double
+        clicks_prev_7d:
+          type: number
+          format: double
+        impressions_30d:
+          type: number
+          format: double
+        impressions_prev_30d:
+          type: number
+          format: double
+        impressions_7d:
+          type: number
+          format: double
+        impressions_prev_7d:
+          type: number
+          format: double
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    ScRow:
+      type: object
+      properties:
+        clicks:
+          type: number
+          format: double
+        impressions:
+          type: number
+          format: double
+        ctr:
+          type: number
+          format: double
+        position:
+          type: number
+          format: double
+        keys:
+          type: array
+          items:
+            type: string
+          nullable: true
+    ScData:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScRow'
+        submitted_indexed_count:
+          type: integer
+          format: int64
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    ScCannibalRow:
+      type: object
+      properties:
+        page:
+          type: string
+        clicks:
+          type: number
+          format: double
+        impressions:
+          type: number
+          format: double
+        ctr:
+          type: number
+          format: double
+        position:
+          type: number
+          format: double
+    ScCannibalResult:
+      type: object
+      properties:
+        query:
+          type: string
+        conflict:
+          type: boolean
+        winner:
+          type: string
+          nullable: true
+        competitors:
+          type: array
+          items:
+            type: string
+        impressions:
+          type: number
+          format: double
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScCannibalRow'
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    KeywordPositionMetrics:
+      type: object
+      properties:
+        clicks:
+          type: number
+          format: double
+        impressions:
+          type: number
+          format: double
+        ctr:
+          type: number
+          format: double
+        position:
+          type: number
+          format: double
+    KeywordPositionResponse:
+      type: object
+      properties:
+        keyword:
+          type: string
+        site_url:
+          type: string
+        date_range:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        compare_start_date:
+          type: string
+          format: date
+        compare_end_date:
+          type: string
+          format: date
+        current:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/KeywordPositionMetrics'
+        previous:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/KeywordPositionMetrics'
+        position_change:
+          type: number
+          format: double
+          nullable: true
+          description: Positive means the keyword moved up (improved), negative means it dropped.
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    SitemapContent:
+      type: object
+      properties:
+        content_type:
+          type: string
+          nullable: true
+        submitted:
+          type: integer
+          format: int64
+          nullable: true
+        indexed:
+          type: integer
+          format: int64
+          nullable: true
+    SitemapEntry:
+      type: object
+      properties:
+        path:
+          type: string
+        type:
+          type: string
+          nullable: true
+        last_submitted:
+          type: string
+          nullable: true
+        last_downloaded:
+          type: string
+          nullable: true
+        is_pending:
+          type: boolean
+        is_sitemaps_index:
+          type: boolean
+        warnings:
+          type: integer
+          format: int64
+        errors:
+          type: integer
+          format: int64
+        contents:
+          type: array
+          items:
+            $ref: '#/components/schemas/SitemapContent'
+    SitemapsResponse:
+      type: object
+      properties:
+        sitemaps:
+          type: array
+          items:
+            $ref: '#/components/schemas/SitemapEntry'
+        cache:
+          $ref: '#/components/schemas/CacheStatus'
+    ProposalBuildRequest:
+      type: object
+      required: [site]
+      properties:
+        site:
+          type: string
+          description: Company/site URL to analyze for the proposal.
+          example: https://example.com
+        industry:
+          type: string
+          nullable: true
+          example: SaaS
+        target_location:
+          type: string
+          nullable: true
+          example: United States
+        language_code:
+          type: string
+          nullable: true
+          example: en
+        competitor:
+          type: string
+          nullable: true
+          example: competitor.com
+        model:
+          type: string
+          nullable: true
+          description: Optional model preference (e.g. claude, grok, gemini, or provider/model id).
+        audience:
+          type: string
+          nullable: true
+          enum: [agency, refresh]
+          description: Defaults to agency when omitted.
+    ProposalBuildStartResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: Job ID to poll for completion.
+        status_url:
+          type: string
+          description: Relative URL for polling job status.
+          example: /api/proposal/build/status/abc123
+        poll_after_ms:
+          type: integer
+          format: int64
+          description: Suggested polling interval in milliseconds.
+    ProposalBuildStatus:
+      type: string
+      enum: [queued, running, saving, completed, failed]
+    ProposalBuildStatusResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ProposalBuildStatus'
+        message:
+          type: string
+          nullable: true
+        proposal:
+          type: object
+          nullable: true
+          additionalProperties: true
+          description: Full proposal payload (present when status=completed).
+        code:
+          type: string
+          nullable: true
+          description: Public share code for `/p/{code}` when completed.
+        share_url:
+          type: string
+          nullable: true
+          description: Relative public proposal URL when completed.
+          example: /p/AbCdEf1234
+        error:
+          type: string
+          nullable: true
+    BuildProposalResponse:
+      type: object
+      properties:
+        proposal:
+          type: object
+          additionalProperties: true
+        code:
+          type: string
+          nullable: true
+        share_url:
+          type: string
+          nullable: true
+          example: /p/AbCdEf1234
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+paths:
+  /api/v1/clients:
+    get:
+      summary: List client sites for the current API key
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Client sites available to this API key
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClientSite'
+    post:
+      summary: Create a client site mapping
+      description: Requires at least one of ga4_property_id or gsc_site_url.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClientSiteRequest'
+      responses:
+        '200':
+          description: Created client site
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientSite'
+        '400':
+          description: Missing GA4 property and GSC site URL
+  /api/v1/ga4/properties:
+    get:
+      summary: List available GA4 properties from Google
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: List of properties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ga4PropertySummary'
+        '502':
+          description: Upstream Google error
+  /api/v1/ga4/summary:
+    get:
+      summary: GA4 organic active users and sessions (30d/7d vs prev 7d)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: property_id
+          required: true
+          schema:
+            type: string
+          description: GA4 property ID (e.g. properties/123456789)
+      responses:
+        '200':
+          description: Summary metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ga4Summary'
+        '403':
+          description: Property not allowed for this API key
+        '401':
+          description: API key unauthorized or missing Google token
+        '502':
+          description: Upstream GA4 error
+  /api/v1/ga4/organic-sessions:
+    get:
+      summary: GA4 organic sessions with custom date range
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: property_id
+          required: false
+          schema:
+            type: string
+            default: properties/260042432
+            example: properties/123456789
+          description: GA4 property ID; defaults to properties/260042432.
+        - in: query
+          name: device
+          schema:
+            type: string
+            example: desktop
+          description: Optional device category filter (e.g. desktop, mobile, tablet).
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+            example: "2026-01-21"
+          description: Start date (YYYY-MM-DD). Overrides date_range when provided with end_date.
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+            example: "2026-01-31"
+          description: End date (YYYY-MM-DD). Overrides date_range when provided with start_date.
+        - in: query
+          name: compare_start_date
+          schema:
+            type: string
+            format: date
+            example: "2026-01-10"
+          description: Compare window start date (YYYY-MM-DD). Defaults to the period immediately before start_date.
+        - in: query
+          name: compare_end_date
+          schema:
+            type: string
+            format: date
+            example: "2026-01-20"
+          description: Compare window end date (YYYY-MM-DD). Defaults to the period immediately before end_date.
+        - in: query
+          name: date_range
+          schema:
+            type: string
+            enum: ["7d", "30d"]
+            example: "7d"
+          description: Shortcut presets; defaults to 30d.
+        - in: query
+          name: path_prefix
+          schema:
+            type: string
+            example: "/blog/"
+          description: Optional path prefix filter (e.g. /blog/).
+        - in: query
+          name: path_scope
+          schema:
+            type: string
+            enum: ["landing", "page"]
+            example: "landing"
+          description: Scope for path filtering; landing filters landingPage, page filters pagePathPlusQueryString.
+      responses:
+        '200':
+          description: Organic sessions summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ga4OrganicSessionsResponse'
+              examples:
+                custom_range:
+                  summary: Custom date range with explicit comparison window
+                  value:
+                    property_id: properties/123456789
+                    start_date: "2026-01-21"
+                    end_date: "2026-01-31"
+                    compare_start_date: "2026-01-10"
+                    compare_end_date: "2026-01-20"
+                    sessions_current: 18234
+                    sessions_previous: 20110
+                    sessions_change_percent: -9.33
+                    cache:
+                      cached: false
+                      age_seconds: null
+                preset_range:
+                  summary: Preset range with auto-derived comparison window
+                  value:
+                    property_id: properties/123456789
+                    start_date: "2026-01-27"
+                    end_date: "2026-02-02"
+                    compare_start_date: "2026-01-20"
+                    compare_end_date: "2026-01-26"
+                    sessions_current: 24500
+                    sessions_previous: 23800
+                    sessions_change_percent: 2.94
+                    cache:
+                      cached: true
+                      age_seconds: 120
+        '403':
+          description: Property not allowed for this API key
+        '401':
+          description: API key unauthorized or missing Google token
+        '502':
+          description: Upstream GA4 error
+  /api/v1/ga4/conversions:
+    get:
+      summary: GA4 conversions/key events (30d vs prev 30d)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: property_id
+          required: true
+          schema:
+            type: string
+          description: GA4 property ID
+      responses:
+        '200':
+          description: Conversion metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ga4ConversionsResponse'
+        '403':
+          description: Property not allowed for this API key
+        '502':
+          description: Upstream GA4 error
+  /api/v1/ga4/landing-pages:
+    get:
+      summary: GA4 landing pages with conversions (date-range)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: property_id
+          required: false
+          schema:
+            type: string
+            default: properties/260042432
+          description: GA4 property ID; defaults to properties/260042432.
+        - in: query
+          name: device
+          schema:
+            type: string
+          description: Optional device category filter (e.g. desktop, mobile, tablet).
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+          description: Start date (YYYY-MM-DD). Overrides date_range when provided with end_date.
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+          description: End date (YYYY-MM-DD). Overrides date_range when provided with start_date.
+        - in: query
+          name: date_range
+          schema:
+            type: string
+            enum: ["7d", "30d"]
+          description: Shortcut presets; defaults to 30d.
+      responses:
+        '200':
+          description: Landing page performance rows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ga4LandingPagesResponse'
+        '403':
+          description: Property not allowed
+        '502':
+          description: Upstream GA4 error
+  /api/v1/ga4/top-events:
+    get:
+      summary: GA4 top events with conversions (date-range)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: property_id
+          required: false
+          schema:
+            type: string
+            default: properties/260042432
+          description: GA4 property ID; defaults to properties/260042432.
+        - in: query
+          name: device
+          schema:
+            type: string
+          description: Optional device category filter (e.g. desktop, mobile, tablet).
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+          description: Start date (YYYY-MM-DD). Overrides date_range when provided with end_date.
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+          description: End date (YYYY-MM-DD). Overrides date_range when provided with start_date.
+        - in: query
+          name: date_range
+          schema:
+            type: string
+            enum: ["7d", "30d"]
+          description: Shortcut presets; defaults to 30d.
+      responses:
+        '200':
+          description: Top events rows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ga4TopEventsResponse'
+        '403':
+          description: Property not allowed
+        '502':
+          description: Upstream GA4 error
+  /api/v1/sc/sites:
+    get:
+      summary: List available Search Console sites from Google
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: List of sites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GscSite'
+        '502':
+          description: Upstream Google error
+  /api/v1/sc/summary:
+    get:
+      summary: Search Console total clicks and impressions (30d/7d vs prev)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: site_url
+          required: true
+          schema:
+            type: string
+          description: Site URL
+      responses:
+        '200':
+          description: Summary metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScSummary'
+        '403':
+          description: Site not allowed
+  /api/v1/sc/sitemaps:
+    get:
+      summary: List submitted sitemaps for a Search Console property
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: site_url
+          required: true
+          schema:
+            type: string
+          description: Site URL as known to Search Console (URL-encoded if needed)
+      responses:
+        '200':
+          description: Submitted sitemaps with counts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SitemapsResponse'
+        '403':
+          description: Site not allowed
+        '401':
+          description: API key unauthorized or missing Google token
+        '502':
+          description: Upstream Search Console error
+  /api/v1/sc/query:
+    get:
+      summary: Search Console top queries (supports 7d/30d ranges, top 10); filter to a single keyword with `keyword`
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: site_url
+          required: true
+          schema:
+            type: string
+          description: Site URL as known to Search Console (URL-encoded if needed)
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+          description: Start date (YYYY-MM-DD). Overrides date_range when provided with end_date.
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+          description: End date (YYYY-MM-DD). Overrides date_range when provided with start_date.
+        - in: query
+          name: date_range
+          schema:
+            type: string
+            enum: ["7d", "30d"]
+          description: Shortcut for preset ranges; defaults to 30d.
+        - in: query
+          name: device
+          schema:
+            type: string
+          description: Optional device filter (e.g. desktop, mobile, tablet).
+        - in: query
+          name: keyword
+          schema:
+            type: string
+          description: Filter to an exact keyword/query string (e.g. "plumber call answering service"). Returns that keyword's position, clicks, impressions, and CTR.
+      responses:
+        '200':
+          description: Query performance rows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScData'
+        '403':
+          description: Site not allowed for this API key
+        '401':
+          description: API key unauthorized or missing Google token
+        '502':
+          description: Upstream Search Console error
+  /api/v1/sc/pages:
+    get:
+      summary: Search Console top pages by clicks (supports 7d/30d ranges, top 50)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: site_url
+          required: true
+          schema:
+            type: string
+          description: Site URL
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+          description: Start date (YYYY-MM-DD). Overrides date_range when provided with end_date.
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+          description: End date (YYYY-MM-DD). Overrides date_range when provided with start_date.
+        - in: query
+          name: date_range
+          schema:
+            type: string
+            enum: ["7d", "30d"]
+          description: Shortcut for preset ranges; defaults to 30d.
+        - in: query
+          name: device
+          schema:
+            type: string
+          description: Optional device filter (e.g. desktop, mobile, tablet).
+      responses:
+        '200':
+          description: Page performance rows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScData'
+        '403':
+          description: Site not allowed
+  /api/v1/sc/keyword-analysis:
+    get:
+      summary: Search Console top queries for deeper analysis (last 30d, top 50)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: site_url
+          required: true
+          schema:
+            type: string
+          description: Site URL
+      responses:
+        '200':
+          description: Query performance rows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScData'
+        '403':
+          description: Site not allowed
+  /api/v1/sc/cannibalization:
+    get:
+      summary: Check keyword cannibalization for a single query (query+page rows)
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: site_url
+          required: true
+          schema:
+            type: string
+          description: Site URL as known to Search Console (URL-encoded if needed)
+        - in: query
+          name: keyword
+          required: true
+          schema:
+            type: string
+          description: Query to check for cannibalization
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date
+          description: Start date (YYYY-MM-DD). Overrides date_range when provided with end_date.
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date
+          description: End date (YYYY-MM-DD). Overrides date_range when provided with start_date.
+        - in: query
+          name: date_range
+          schema:
+            type: string
+            enum: ["7d", "30d"]
+          description: Shortcut for preset ranges; defaults to 30d.
+        - in: query
+          name: device
+          schema:
+            type: string
+          description: Optional device filter (e.g. desktop, mobile, tablet).
+        - in: query
+          name: min_impressions
+          schema:
+            type: number
+            format: double
+          description: Minimum impressions threshold per page (default 20).
+        - in: query
+          name: position_tolerance
+          schema:
+            type: number
+            format: double
+          description: Allowed difference in avg position to consider a conflict (default 2).
+      responses:
+        '200':
+          description: Cannibalization result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScCannibalResult'
+        '403':
+          description: Site not allowed for this API key
+        '401':
+          description: API key unauthorized or missing Google token
+        '502':
+          description: Upstream Search Console error
+  /api/v1/proposals/build/start:
+    post:
+      summary: Start an async proposal generation job
+      description: |
+        Recommended for agents and server-to-server calls to avoid request timeouts.
+        Poll `/api/v1/proposals/build/jobs/{job_id}` until status is `completed` or `failed`.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProposalBuildRequest'
+      responses:
+        '202':
+          description: Job accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProposalBuildStartResponse'
+        '400':
+          description: Missing/invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: API key unauthorized
+        '403':
+          description: Agency plan required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/proposals/build/jobs/{job_id}:
+    get:
+      summary: Poll async proposal generation status
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: path
+          name: job_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current job status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProposalBuildStatusResponse'
+        '401':
+          description: API key unauthorized
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/proposals/build:
+    post:
+      summary: Build a proposal synchronously
+      description: |
+        Returns the full proposal in one response. Prefer async `/api/v1/proposals/build/start`
+        when running behind strict request timeouts.
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProposalBuildRequest'
+      responses:
+        '200':
+          description: Proposal built successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuildProposalResponse'
+        '400':
+          description: Missing/invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: API key unauthorized
+        '403':
+          description: Agency plan required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '502':
+          description: Upstream proposal generation failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/sc/keyword-position:
+    get:
+      summary: Track position, clicks, impressions and CTR for a specific keyword with period-over-period comparison
+      description: |
+        Returns current and previous period metrics for an exact keyword match from Google Search Console.
+        Supports 7d and 30d windows; the previous period is the same length immediately before the current window.
+        Note: GSC data has a 2-3 day lag so results reflect data up to ~2 days ago.
+        `position_change` is positive when the keyword moved up (lower position number = better rank).
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - in: query
+          name: site_url
+          required: true
+          schema:
+            type: string
+          description: Site URL as known to Search Console (e.g. sc-domain:example.com or https://example.com/)
+        - in: query
+          name: keyword
+          required: true
+          schema:
+            type: string
+          description: Exact keyword to track (e.g. "plumber call answering service")
+        - in: query
+          name: date_range
+          schema:
+            type: string
+            enum: ["7d", "30d"]
+            default: "30d"
+          description: Window size; defaults to 30d.
+      responses:
+        '200':
+          description: Keyword position metrics with comparison
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordPositionResponse'
+              examples:
+                found:
+                  summary: Keyword found with comparison
+                  value:
+                    keyword: "plumber call answering service"
+                    site_url: "sc-domain:plumbercallanswering.com"
+                    date_range: "30d"
+                    start_date: "2026-03-27"
+                    end_date: "2026-04-26"
+                    compare_start_date: "2026-02-25"
+                    compare_end_date: "2026-03-26"
+                    current:
+                      clicks: 42
+                      impressions: 680
+                      ctr: 0.0618
+                      position: 4.2
+                    previous:
+                      clicks: 31
+                      impressions: 590
+                      ctr: 0.0525
+                      position: 6.1
+                    position_change: 1.9
+                    cache:
+                      cached: false
+                      age_seconds: null
+        '400':
+          description: Missing required parameters or unsupported date_range
+        '401':
+          description: API key unauthorized or missing Google token
+        '502':
+          description: Upstream Search Console error

@@ -1,0 +1,35 @@
+{
+  "name": "seo-agency",
+  "description": "Open-source skills that turn your agent into an SEO operator. Diagnose traffic decay, write refresh briefs, build proposals, and generate client-ready reports.",
+  "version": "0.1.0",
+  "author": "Refresh Agent",
+  "repository": "marketingskills/seo",
+  "skills": [
+    "traffic-decay-detector",
+    "keyword-opportunity-finder",
+    "content-decay-monitor-setup",
+    "technical-seo-triage",
+    "serp-authority-mark",
+    "competitor-serp-monitor",
+    "cannibalization-check",
+    "content-refresh-brief",
+    "seo-content-brief",
+    "internal-link-builder",
+    "schema-fix-writer",
+    "title-meta-rewriter",
+    "client-report-writer",
+    "proposal-builder",
+    "seo-strategy",
+    "seo-priority-score",
+    "content-moat-planner",
+    "seo-offer-architect",
+    "refresh-vs-new-content",
+    "live-search-console-data"
+  ],
+  "categories": ["seo", "marketing", "content"],
+  "installCommands": [
+    "curl -fsSL marketingskills.net/seo | bash",
+    "npm i -g seo-agency && seo-agency install",
+    "npx skills add marketingskills/seo"
+  ]
+}
