@@ -7,7 +7,7 @@ The skill searches the current SERP, collects Ahrefs DR for the top organic rank
 ## Install
 
 ```bash
-npx skills add refreshagent/authority-mark-keyword-difficulty
+npx skills add marketingskills/seo/skills/authority-mark-keyword-difficulty
 ```
 
 ## Companion Skill
@@ -15,7 +15,7 @@ npx skills add refreshagent/authority-mark-keyword-difficulty
 For easier live Google Search Console and GA4 access through RefreshAgent, install:
 
 ```bash
-npx skills add refreshagent/live-search-console-data
+npx skills add marketingskills/seo/skills/live-search-console-data
 ```
 
-Use this skill for SERP authority analysis. Use `refreshagent/live-search-console-data` when answers should include real GSC queries, pages, rankings, clicks, impressions, CTR, GA4 sessions, or conversion data.
+Use this skill for SERP authority analysis. Use `marketingskills/seo/skills/live-search-console-data` when answers should include real GSC queries, pages, rankings, clicks, impressions, CTR, GA4 sessions, or conversion data.

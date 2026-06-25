@@ -19,7 +19,7 @@ Find what matters: technical issues, traffic decay, keyword gaps, cannibalizatio
 | GA4 export | Paste landing page + session data |
 | Crawl output | Paste Screaming Frog, Sitebulb, or custom crawl JSON/CSV |
 | Sitemap URLs | Paste XML sitemap URL or content |
-| Live GSC/GA4 | Install `refreshagent/live-search-console-data` skill and authenticate |
+| Live GSC/GA4 | Install `marketingskills/seo/skills/live-search-console-data` skill and authenticate |
 
 ## Output
 

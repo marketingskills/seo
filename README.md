@@ -54,6 +54,7 @@ Decide what not to do — priority scoring, content moat planning, offer archite
 | `content-moat-planner` | Durable topical clusters based on authority and product fit |
 | `seo-offer-architect` | Findings into a paid agency package or retainer |
 | `refresh-vs-new-content` | Update, consolidate, prune, or create |
+| `seo-growth-loop` | Closed-loop workflow: choose, publish, verify, index, and log one SEO improvement |
 
 ## Companion: PR-as-link-building
 
@@ -98,6 +99,7 @@ skills/                     # Individual skill directories
   content-moat-planner/
   seo-offer-architect/
   refresh-vs-new-content/
+  seo-growth-loop/
   live-search-console-data/  # Live GSC/GA4 data bridge — 30s setup
 docs/                       # Getting started, example run, workflows
 examples/                   # Anonymized real run artifacts

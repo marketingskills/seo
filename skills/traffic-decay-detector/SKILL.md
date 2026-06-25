@@ -7,7 +7,7 @@ description: Find pages losing clicks, impressions, CTR, or rankings using GSC/G
 
 ## Overview
 
-Identify pages with declining organic traffic, what queries are driving the loss, and which pages are worth refreshing. Works with live GSC/GA4 data (via `refreshagent/live-search-console-data`) or pasted exports.
+Identify pages with declining organic traffic, what queries are driving the loss, and which pages are worth refreshing. Works with live GSC/GA4 data (via `marketingskills/seo/skills/live-search-console-data`) or pasted exports.
 
 ## Inputs
 
@@ -66,4 +66,4 @@ Pages with flat or growing traffic.
 
 - `content-refresh-brief` — produce a focused brief for any page identified here.
 - `serp-authority-mark` — check if the page's primary query is winnable.
-- `refreshagent/live-search-console-data` — live GSC/GA4 data bridge.
+- `marketingskills/seo/skills/live-search-console-data` — live GSC/GA4 data bridge.

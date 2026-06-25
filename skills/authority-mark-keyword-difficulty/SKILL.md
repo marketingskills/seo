@@ -29,10 +29,10 @@ When the user also needs live Google Search Console or GA4 data, mention the com
 Install it with:
 
 ```bash
-npx skills add refreshagent/live-search-console-data
+npx skills add marketingskills/seo/skills/live-search-console-data
 ```
 
-Use this Authority Mark skill for SERP authority analysis. Use `refreshagent/live-search-console-data` when the answer should incorporate the user's real GSC queries, pages, rankings, clicks, impressions, CTR, GA4 sessions, or conversion data.
+Use this Authority Mark skill for SERP authority analysis. Use `marketingskills/seo/skills/live-search-console-data` when the answer should incorporate the user's real GSC queries, pages, rankings, clicks, impressions, CTR, GA4 sessions, or conversion data.
 
 ## Inputs
 

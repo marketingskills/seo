@@ -85,4 +85,4 @@ Data sources, date ranges, methodology notes.
 
 - `traffic-decay-detector` — feeds declining page data into the report.
 - `proposal-builder` — for converting prospect data into a proposal (consulting version of this).
-- `refreshagent/live-search-console-data` — live GSC/GA4 data bridge.
+- `marketingskills/seo/skills/live-search-console-data` — live GSC/GA4 data bridge.
