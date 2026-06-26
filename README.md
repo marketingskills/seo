@@ -22,6 +22,7 @@ Surface what matters — technical issues, traffic decay, keyword gaps, cannibal
 | Skill | What it finds |
 |---|---|
 | `traffic-decay-detector` | Pages losing clicks, impressions, CTR, or rankings using GSC/GA4 or pasted data |
+| `keyword-planner` | Google Keyword Planner ideas, search volume, competition, and bid ranges from seeds or URLs |
 | `keyword-opportunity-finder` | High-impression low-CTR terms, striking-distance keywords, topic gaps |
 | `content-decay-monitor-setup` | Saved monitors for recurring decay scans on watched pages/topics |
 | `technical-seo-triage` | Prioritized crawl, indexation, canonical, schema, and internal-link issues |
@@ -81,6 +82,7 @@ PR is a form of link building. Newsjack handles the earned-media side while SEO 
 ```
 skills/                     # Individual skill directories
   traffic-decay-detector/
+  keyword-planner/
   keyword-opportunity-finder/
   content-decay-monitor-setup/
   technical-seo-triage/

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Keyword Planner"
+  short_description: "Google Keyword Planner demand research"
+  default_prompt: "Use $keyword-planner to get Google Keyword Planner ideas and search volume for these seed keywords."
