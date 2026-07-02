@@ -9,7 +9,7 @@ description: Run a closed-loop SEO growth workflow for a website by using Search
 
 Use this skill to choose and complete one high-leverage SEO improvement without assuming a specific tech stack or coding agent. The workflow prefers real performance evidence first, validates demand, checks SERP competitiveness with Authority Mark, then publishes through whatever safe path the project exposes.
 
-Default to Claude Code-style local project workflows when the runtime is not specified, but adapt to Codex, OpenCode, or advisory-only environments when that is what the user is using. See `references/agent-runtimes.md`.
+Default to Claude Code-style local project workflows when the runtime is not specified, but adapt to Codex, OpenCode, or advisory-only environments when that is what the user is using. For recurring runs, treat the agent as a bounded one-shot process, not a daemon. See `references/agent-runtimes.md`.
 
 ## First: Identify The Operating Mode
 
@@ -77,6 +77,7 @@ Run this loop in order.
 11. **Schedule only when requested**
    - If the user asks for a recurring loop, propose a schedule and runtime first.
    - Do not install cron jobs, systemd timers, GitHub Actions, or hosted schedules without explicit user permission.
+   - Scheduled jobs must run noninteractively, use an overlap lock, enforce a wall-clock timeout, default to report-only mode, and exit after one action or report.
    - See `references/scheduling.md`.
 
 ## Evidence Priority

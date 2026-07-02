@@ -21,6 +21,11 @@ scheduling:
   method: cron # cron | systemd | github_actions | hosted | none
   cadence: weekly
   command: null
+  mode: report-only # report-only | publish
+  timeout: 3h
+  kill_after: 5m
+  lock_file: /tmp/seo-growth-loop-example.lock
+  log_dir: logs/seo-growth
 restricted_topics:
   - topics that should not be targeted
 required_checks:

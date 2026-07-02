@@ -21,6 +21,15 @@ Use Codex conventions when running inside Codex:
 - Prefer deterministic local tests before finalizing.
 - Keep user-facing final summaries concise and include verification status.
 
+For scheduled runs, use the noninteractive CLI and avoid persistent sessions:
+
+```bash
+codex exec --ephemeral --cd /path/to/project --ask-for-approval never \
+  "Use the seo-growth-loop skill. Run exactly one report-only cycle, write the log, and stop."
+```
+
+Use `--ask-for-approval never` in cron so the job fails cleanly instead of hanging on an approval prompt. Do not use interactive Codex, `resume`, app servers, or remote-control daemons for scheduled SEO loops.
+
 ## OpenCode
 
 Use OpenCode or other coding-agent conventions when that is the active runtime:
@@ -29,6 +38,15 @@ Use OpenCode or other coding-agent conventions when that is the active runtime:
 - Use the editing and command tools provided by that runtime.
 - Preserve the same SEO decision loop; only the mechanics of file edits, command execution, and approval prompts change.
 - If OpenCode lacks a needed integration, switch to advisory mode or provide exact commands for the user to run.
+
+For scheduled runs, use `opencode run` as a foreground one-shot command:
+
+```bash
+opencode run --dir /path/to/project \
+  "Use the seo-growth-loop skill. Run exactly one report-only cycle, write the log, and stop."
+```
+
+Do not use `opencode serve`, `opencode web`, `attach`, `--continue`, or long-lived shared sessions for cron jobs. If the runtime needs a persistent server for another reason, run the SEO loop through a separate locked wrapper and enforce a timeout around the foreground command.
 
 ## Advisory Or No Local Code
 
