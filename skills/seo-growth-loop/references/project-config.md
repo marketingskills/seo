@@ -11,6 +11,22 @@ target_audience: buyers researching vendors
 publishing_mode: local_repo # local_repo | cms_api | hybrid | advisory
 agent_runtime: claude_code # claude_code | codex | opencode | other | advisory
 content_update_surface: WordPress REST API, Contentful, Django admin, Markdown files, etc.
+content_source_of_truth: git # git | cms_api | database | hybrid | unknown
+local_content_paths:
+  - content/
+  - src/content/
+template_paths:
+  - app/
+  - components/
+cms:
+  provider: wordpress # wordpress | webflow | contentful | sanity | shopify | custom | none
+  api_base_url: https://example.com/wp-json/wp/v2
+  record_types:
+    - posts
+    - pages
+git_publish:
+  branch: main
+  content_committed_to_git: true
 production_verification: live_url # live_url | preview_url | local_server | advisory_only
 indexing_method: indexnow # indexnow | search_console | sitemap_only | cms_auto | none
 work_log_path: seo_improvements_log.md
@@ -41,6 +57,7 @@ required_checks:
 - Use `site_url` for live verification and canonical URLs.
 - Use `gsc_property` for Search Console requests.
 - Use `publishing_mode` to choose the adapter.
+- Use `content_source_of_truth`, `local_content_paths`, `template_paths`, `cms`, and `git_publish` to decide whether a change belongs in Git, a CMS/API, or both.
 - Use `authority_domain` for Authority Mark comparisons. Default to the registrable domain of `site_url`.
 - Use `business_goal` to decide which traffic is commercially useful.
 
@@ -49,5 +66,6 @@ required_checks:
 If config is missing:
 
 1. Identify the live site from user instructions, package metadata, repo env, or canonical URLs.
-2. Inspect the repo for framework, deploy, content, and API clues.
-3. Ask only if the target site or write path remains ambiguous.
+2. Inspect the repo for framework, deploy, content, template, CMS/API, and environment clues.
+3. Compare live sitemap/URLs with local files when possible; missing local files often mean CMS/API content.
+4. Ask only if the target site, source of truth, or write path remains ambiguous.

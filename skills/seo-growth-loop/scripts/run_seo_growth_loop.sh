@@ -31,6 +31,7 @@ prompt="Use the seo-growth-loop skill. Run exactly one bounded SEO growth loop f
 
 Operating rules:
 - Prefer real GSC/analytics/search performance evidence when available.
+- Infer whether this project publishes content from Git, a CMS/API, or a hybrid of code templates plus API content records before choosing the action.
 - Choose one action or one reportable opportunity queue, then stop.
 - Default to report-only behavior unless ${mode} explicitly allows publishing and the project configuration provides a safe publishing path.
 - Do not start servers, app daemons, background workers, remote-control services, or long-lived sessions.

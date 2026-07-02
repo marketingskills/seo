@@ -17,7 +17,7 @@ Before editing anything, identify the project's available surfaces:
 
 - **Performance data**: Google Search Console (or the [`live-search-console-data`](https://github.com/marketingskills/seo/tree/main/skills/live-search-console-data) skill for faster setup), RefreshAgent, Bing Webmaster, analytics, rank tracking, server logs, or none.
 - **Keyword demand**: keyword tool, exported CSV, SERP research, internal site-search data, or none.
-- **Publishing path**: CMS/API, local repo, hybrid, or advisory-only.
+- **Publishing path**: infer whether content is committed to Git, published through a CMS/API, handled by a hybrid code-plus-CMS flow, or advisory-only. See `references/publishing-adapters.md`.
 - **Verification path**: live URL checks, local preview, CI/tests, screenshot/browser checks, schema validation, or manual handoff.
 - **Indexing path**: IndexNow, sitemap, Search Console URL inspection, CMS auto-sitemap, or none.
 - **Work log**: existing SEO log, issue tracker, changelog, or a new markdown log.
@@ -38,6 +38,7 @@ Run this loop in order.
 
 2. **Check memory and architecture**
    - Read existing SEO logs, topical maps, content inventories, issue trackers, sitemap/routes, and live pages.
+   - Identify the content source of truth before choosing the action: Git files, CMS/API records, or a hybrid split between templates/code and content records.
    - Avoid duplicate pages and repeated work. Extend existing surfaces when intent already maps cleanly.
 
 3. **Optimize before building**
@@ -61,6 +62,7 @@ Run this loop in order.
 
 7. **Publish through the available adapter**
    - Use CMS/API mode, local repo mode, hybrid mode, or advisory-only mode as appropriate.
+   - Do not assume repo access means content is stored in Git; many projects keep templates in code and posts/pages in WordPress, Webflow, Contentful, Sanity, Shopify, or a custom API.
    - See `references/publishing-adapters.md`.
 
 8. **Verify rendered output**

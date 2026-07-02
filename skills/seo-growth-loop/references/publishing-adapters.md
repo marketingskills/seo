@@ -2,6 +2,34 @@
 
 Choose the safest adapter the project actually supports. Do not force a local-code workflow onto a CMS-only project, and do not fabricate production changes in advisory mode.
 
+## Publishing Surface Detection
+
+Before writing, classify the project by evidence. Prefer explicit project config or docs, then inspect the repo and environment.
+
+Use **local repo mode** when content itself lives in versioned files:
+
+- Markdown/MDX/content collections under paths such as `content/`, `posts/`, `blog/`, `src/content/`, `app/**/page.*`, or `pages/**`
+- static-site generators such as Astro, Next static content, Hugo, Jekyll, Eleventy, Docusaurus, or Gatsby with file-backed posts
+- docs or deploy notes saying content changes are committed, reviewed, and deployed from Git
+- existing commits that add or update article/page files
+
+Use **CMS/API mode** when content records live outside Git:
+
+- WordPress, Webflow, Contentful, Sanity, Strapi, Shopify, Ghost, HubSpot, Notion-backed sites, Airtable-backed sites, or a custom content API
+- environment variables or docs naming API endpoints, tokens, CMS spaces/datasets, WordPress REST credentials, or admin URLs
+- repo contains only theme, frontend, templates, build code, or integration code while live posts/pages are absent from the repo
+- sitemap/live URL inventory contains content that has no matching local source file
+
+Use **hybrid mode** when code and content are split:
+
+- templates, components, schema, routing, sitemap, or internal-link logic are in Git
+- page/post/product/entity records are created or edited through a CMS/API/database
+- examples: edit a WordPress theme or Next frontend in Git, then create/update the blog post via WordPress REST; add schema rendering in code, then enrich CMS fields; change a listing template in Git, then add entity records via API
+
+Use **advisory mode** when the publishing surface cannot be verified, credentials are missing, writes are unsafe, or the user only wants recommendations.
+
+If evidence conflicts, choose the lowest-risk mode that can complete the requested change and log the uncertainty. Ask only when the target site, source of truth, or production write path remains ambiguous after inspection.
+
 ## CMS/API Mode
 
 Use when the site content is managed through WordPress, Webflow, Contentful, Sanity, Shopify, a custom API, or an admin surface.
@@ -36,10 +64,12 @@ Use when page types, schema, templates, or internal linking live in code while e
 
 Process:
 
-1. Decide whether the bottleneck is data coverage or page architecture.
-2. Use API/CMS for entity/content enrichment.
-3. Use code for reusable page templates, schema, routing, sitemap, and internal-link logic.
-4. Verify both the data record and rendered page.
+1. Map each intended change to its source of truth: code/template, CMS/API record, database row, or both.
+2. Decide whether the bottleneck is data coverage, page architecture, internal linking, metadata rendering, or schema.
+3. Use API/CMS for entity/content enrichment, post/page creation, metadata fields, FAQs, media assignments, and category/tag changes.
+4. Use code for reusable page templates, schema rendering, routing, sitemap generation, canonical logic, and internal-link modules.
+5. Verify both the changed record and the rendered page.
+6. Log files changed, API records changed, deploy/publish status, and any ordering dependency between code deploy and content publish.
 
 ## Advisory Mode
 
