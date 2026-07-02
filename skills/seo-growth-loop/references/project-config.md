@@ -12,6 +12,12 @@ publishing_mode: local_repo # local_repo | cms_api | hybrid | advisory
 agent_runtime: claude_code # claude_code | codex | opencode | other | advisory
 content_update_surface: WordPress REST API, Contentful, Django admin, Markdown files, etc.
 content_source_of_truth: git # git | cms_api | database | hybrid | unknown
+preflight:
+  framework: django # django | rails | laravel | next | astro | hugo | rust | static | wordpress | other | unknown
+  existing_growth_command: null
+  existing_growth_queue: null
+  existing_work_log: seo_improvements_log.md
+  safe_default_mode: report-only
 local_content_paths:
   - content/
   - src/content/
@@ -56,6 +62,7 @@ required_checks:
 
 - Use `site_url` for live verification and canonical URLs.
 - Use `gsc_property` for Search Console requests.
+- Use `preflight` values to avoid rediscovering known project architecture on every run.
 - Use `publishing_mode` to choose the adapter.
 - Use `content_source_of_truth`, `local_content_paths`, `template_paths`, `cms`, and `git_publish` to decide whether a change belongs in Git, a CMS/API, or both.
 - Use `authority_domain` for Authority Mark comparisons. Default to the registrable domain of `site_url`.

@@ -8,6 +8,9 @@ Use this when the project has no stronger existing format. Keep entries concise 
 **Site**
 - Domain:
 - Publishing mode:
+- Content source of truth:
+- Framework:
+- Existing growth workflow:
 - Business goal:
 
 **Baseline**

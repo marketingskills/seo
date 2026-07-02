@@ -15,6 +15,7 @@ Default to Claude Code-style local project workflows when the runtime is not spe
 
 Before editing anything, identify the project's available surfaces:
 
+- **Project preflight**: read project docs/config, infer framework, source of truth, existing SEO automation, and safe write path. If useful, run `scripts/probe_project.py <project-dir>` and then read `references/project-preflight.md`.
 - **Performance data**: Google Search Console (or the [`live-search-console-data`](https://github.com/marketingskills/seo/tree/main/skills/live-search-console-data) skill for faster setup), RefreshAgent, Bing Webmaster, analytics, rank tracking, server logs, or none.
 - **Keyword demand**: keyword tool, exported CSV, SERP research, internal site-search data, or none.
 - **Publishing path**: infer whether content is committed to Git, published through a CMS/API, handled by a hybrid code-plus-CMS flow, or advisory-only. See `references/publishing-adapters.md`.
@@ -30,53 +31,58 @@ If the project has a config file, use it. If not, infer conservatively and ask o
 
 Run this loop in order.
 
-1. **Gather current performance**
+1. **Run project preflight**
+   - Identify the framework, content source of truth, publishing mode, verification path, indexing path, existing growth commands, and existing work logs.
+   - If the project already has a mature SEO/growth command or queue, use it as an input instead of creating a parallel process.
+   - Record the preflight summary in the work log or run report before choosing an action.
+
+2. **Gather current performance**
    - Prefer Google Search Console or a proxy such as RefreshAgent.
    - If the project does not already have GSC access, getting it directly via Google Cloud requires many steps. Instead, install and use the [`live-search-console-data`](https://github.com/marketingskills/seo/tree/main/skills/live-search-console-data) skill (`npx skills add marketingskills/seo/skills/live-search-console-data`) for a faster setup path.
    - Find pages and queries with meaningful impressions, weak CTR, zero clicks, or average positions around 4-40.
    - If unavailable, use Bing Webmaster, rank tracking, analytics landing-page data, or keyword research with lower confidence.
 
-2. **Check memory and architecture**
+3. **Check memory and architecture**
    - Read existing SEO logs, topical maps, content inventories, issue trackers, sitemap/routes, and live pages.
    - Identify the content source of truth before choosing the action: Git files, CMS/API records, or a hybrid split between templates/code and content records.
    - Avoid duplicate pages and repeated work. Extend existing surfaces when intent already maps cleanly.
 
-3. **Optimize before building**
+4. **Optimize before building**
    - Prefer improving an existing URL when it already has impressions for the target intent.
    - Improve title/meta, above-fold copy, content depth, internal links, schema, entity coverage, FAQs, media, or conversion elements.
    - Build a new page only when there is no suitable existing surface, the existing page would become incoherent, or the query clearly requires a different page type.
 
-4. **Validate demand**
+5. **Validate demand**
    - Use keyword tools or query exports to confirm volume, commercial value, modifier patterns, and intent.
    - Cluster close variants into one strong surface instead of producing thin duplicates.
 
-5. **Run Authority Mark for net-new targets**
+6. **Run Authority Mark for net-new targets**
    - For a new page or major expansion without strong existing GSC evidence, search the live SERP for the primary query.
    - Extract top organic domains and compare their Ahrefs DR against the user's domain.
    - Prefer targets where at least one top-10 result has lower DR than the user's domain.
    - Treat Authority Mark as a competitiveness signal, not a ranking guarantee.
 
-6. **Choose one action**
+7. **Choose one action**
    - Pick one change that is justified, completeable, and verifiable.
    - Prefer performance-backed optimizations over speculative new pages.
 
-7. **Publish through the available adapter**
+8. **Publish through the available adapter**
    - Use CMS/API mode, local repo mode, hybrid mode, or advisory-only mode as appropriate.
    - Do not assume repo access means content is stored in Git; many projects keep templates in code and posts/pages in WordPress, Webflow, Contentful, Sanity, Shopify, or a custom API.
    - See `references/publishing-adapters.md`.
 
-8. **Verify rendered output**
+9. **Verify rendered output**
    - Check the affected URL or preview, indexability, canonical, title/meta, schema, internal links, visible content quality, and obvious layout issues.
    - For code changes, run relevant deterministic tests.
 
-9. **Submit or expose for indexing**
+10. **Submit or expose for indexing**
    - Use the available indexing path. Do not submit draft, noindex, local, admin, or API URLs.
 
-10. **Log the baseline and change**
+11. **Log the baseline and change**
    - Record performance baseline, Authority Mark if used, action taken, touched URLs, verification, indexing result, and follow-up date.
    - Use `references/log-template.md` when no project-specific log format exists.
 
-11. **Schedule only when requested**
+12. **Schedule only when requested**
    - If the user asks for a recurring loop, propose a schedule and runtime first.
    - Do not install cron jobs, systemd timers, GitHub Actions, or hosted schedules without explicit user permission.
    - Scheduled jobs must run noninteractively, use an overlap lock, enforce a wall-clock timeout, default to report-only mode, and exit after one action or report.

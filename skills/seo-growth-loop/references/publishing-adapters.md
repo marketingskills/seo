@@ -30,6 +30,45 @@ Use **advisory mode** when the publishing surface cannot be verified, credential
 
 If evidence conflicts, choose the lowest-risk mode that can complete the requested change and log the uncertainty. Ask only when the target site, source of truth, or production write path remains ambiguous after inspection.
 
+## Source-Of-Truth Rule
+
+Before changing a URL, answer: "Where does this page's rendered content actually come from?"
+
+Common answers:
+
+- **Git file**: edit the content file or route/template in Git, then test and follow the deploy workflow.
+- **Database record**: update through the admin/API/management command that writes the live database; edit seed files only when the project says seed files are the production source.
+- **CMS/API record**: read and patch the record through the official API/admin surface.
+- **Generated from structured data**: change the generator, thresholds, query, template, or source dataset based on which part limits quality.
+- **Template plus database/API**: use hybrid mode and separate data changes from reusable rendering changes.
+- **Unknown**: stay report-only or advisory until the source of truth is clear.
+
+Do not treat local repository access as proof that production content is Git-backed. Do not treat a seed/import file as production content unless project docs or deploy scripts confirm it.
+
+## Adapter Priority Matrix
+
+| Opportunity | Prefer code/Git when | Prefer API/admin/database when |
+|---|---|---|
+| Title/meta/schema | rendering logic lives in templates or components | editable SEO fields exist on records |
+| One entity, location, product, or company | the entity is represented by a versioned file | the page type already exists and records drive pages |
+| New page type or route | route/template/schema/sitemap behavior is missing | CMS already supports the page type cleanly |
+| Internal links | navigation, related-link modules, or sitewide templates need changes | record-level relationships or tags drive links |
+| Programmatic expansion | generator thresholds, templates, or sitemap logic need changes | adding records alone creates indexable pages |
+| Content refresh | page body is file-backed | body/FAQ/fields are editable records |
+
+When both columns apply, use hybrid mode and log the required order of operations.
+
+## Existing Automation Handoff
+
+If the project already has a growth workflow, queue, or SEO agent script, use it as the first diagnostic input:
+
+- commands named like `daily_growth_*`, `run_*growth*.sh`, `seo_agent.*`, or management commands that write SEO queues
+- output folders such as `growth_queues/`, `.repo-growth/`, or SEO reports
+- logs such as `seo_improvements_log.md`, `seo_growth.log`, or dated growth reports
+- docs mentioning Search Console, RefreshAgent, IndexNow, keyword queues, Authority Mark, or recurring SEO work
+
+Do not create a second scheduler or duplicate opportunity queue unless the user explicitly wants a replacement. Prefer: run or read the existing workflow, choose one action from its output, implement/verify/log, then stop.
+
 ## CMS/API Mode
 
 Use when the site content is managed through WordPress, Webflow, Contentful, Sanity, Shopify, a custom API, or an admin surface.

@@ -30,8 +30,10 @@ latest_file="${log_dir}/latest.log"
 prompt="Use the seo-growth-loop skill. Run exactly one bounded SEO growth loop for this project in ${mode} mode.
 
 Operating rules:
+- Start with project preflight: infer framework, source of truth, existing SEO/growth commands, work logs, verification path, and indexing path.
 - Prefer real GSC/analytics/search performance evidence when available.
 - Infer whether this project publishes content from Git, a CMS/API, or a hybrid of code templates plus API content records before choosing the action.
+- If the project already has a mature SEO/growth command or opportunity queue, use that as input instead of creating a parallel workflow.
 - Choose one action or one reportable opportunity queue, then stop.
 - Default to report-only behavior unless ${mode} explicitly allows publishing and the project configuration provides a safe publishing path.
 - Do not start servers, app daemons, background workers, remote-control services, or long-lived sessions.
