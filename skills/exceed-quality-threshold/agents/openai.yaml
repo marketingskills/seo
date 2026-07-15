@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exceed Quality Threshold"
+  short_description: "Benchmark content against its true SERP cohort"
+  default_prompt: "Use $exceed-quality-threshold to benchmark this page against its live SERP cohort and show what it must improve."

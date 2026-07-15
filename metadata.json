@@ -15,6 +15,7 @@
     "cannibalization-check",
     "content-refresh-brief",
     "seo-content-brief",
+    "exceed-quality-threshold",
     "internal-link-builder",
     "schema-fix-writer",
     "title-meta-rewriter",

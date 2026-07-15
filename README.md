@@ -38,6 +38,7 @@ Turn diagnosis into output — refresh briefs, content briefs, internal link map
 |---|---|
 | `content-refresh-brief` | Focused refresh brief for a declining page with SERP intent analysis |
 | `seo-content-brief` | Search-intent, entity, outline, and internal-link brief for new pages |
+| `exceed-quality-threshold` | Benchmark a page against its true SERP cohort and define the material improvement needed to win |
 | `internal-link-builder` | Source pages, anchor text, target URLs, and rationale |
 | `schema-fix-writer` | Schema change proposals from page type and SERP context |
 | `title-meta-rewriter` | Title/meta descriptions from GSC query evidence and SERP intent |
@@ -91,6 +92,7 @@ skills/                     # Individual skill directories
   cannibalization-check/
   content-refresh-brief/
   seo-content-brief/
+  exceed-quality-threshold/
   internal-link-builder/
   schema-fix-writer/
   title-meta-rewriter/
