@@ -1,5 +1,7 @@
 # SEO Operator
 
+> Part of [Marketing Skills](https://marketingskills.net/skills/seo/) — open-source marketing operators for AI agents.
+
 The open-source skills that turn your agent into an SEO operator.
 
 Install once. Claude Code, Codex, Hermes, or OpenClaw can diagnose traffic drops,
