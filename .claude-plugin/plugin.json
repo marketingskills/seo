@@ -1,0 +1,25 @@
+{
+  "name": "seo-operator",
+  "version": "1.1.0",
+  "description": "30 open-source SEO, AEO, and GEO skills for AI agents with deterministic foundation/AI-crawler checks, pre/post-deploy regression snapshots, Tier-3 safety hooks, and optional 30-second live GSC/GA4 via RefreshAgent.",
+  "author": {
+    "name": "Marketing Skills (Duncan Trevithick)",
+    "url": "https://marketingskills.net"
+  },
+  "homepage": "https://marketingskills.net/skills/seo/",
+  "repository": "https://github.com/marketingskills/seo",
+  "license": "MIT",
+  "keywords": [
+    "seo",
+    "aeo",
+    "geo",
+    "ai-search",
+    "technical-seo",
+    "search-console",
+    "ga4",
+    "bing",
+    "agent-skills"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

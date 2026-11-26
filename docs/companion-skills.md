@@ -25,7 +25,9 @@ curl -fsSL marketingskills.net/seo | bash
 
 ## RefreshAgent: optional live GSC/GA4 bridge
 
-The bundled `live-search-console-data` skill connects your agent to live Google Search Console and GA4 data through [RefreshAgent](https://refreshagent.com/?utm_source=marketingskills_seo) in 30 seconds with one Google sign-in, skipping Google Cloud project and OAuth setup. Every skill in this repo still works with pasted exports. RefreshAgent includes a free monthly allowance, with higher limits at [refreshagent.com/plans](https://refreshagent.com/plans/?utm_source=marketingskills_seo).
+The bundled `live-search-console-data` skill connects your coding agent to live Google Search Console and GA4 data through [RefreshAgent](https://refreshagent.com/?utm_source=marketingskills_seo) in 30 seconds with one Google sign-in, skipping Google Cloud project and OAuth setup. Every skill in this repo still works with pasted exports. RefreshAgent includes a free monthly allowance, with higher limits at [refreshagent.com/plans](https://refreshagent.com/plans/?utm_source=marketingskills_seo).
+
+Using ChatGPT instead of a terminal agent? Connect the same live Search Console and GA4 data inside ChatGPT with the [RefreshAgent ChatGPT App](https://chatgpt.com/plugins/plugin_asdk_app_6ac5ec2359dc8191899aeb18f6d6db6e).
 
 ## Keeping skills focused
 

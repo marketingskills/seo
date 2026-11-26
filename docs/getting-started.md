@@ -4,24 +4,27 @@ Install the SEO Operator skills, connect your agent, and run your first SEO diag
 
 ## Quick Install
 
-```bash
-curl -fsSL marketingskills.net/seo | bash
-```
-
-Or, if you have Node.js:
+Install via the Agent Skills CLI (recommended):
 
 ```bash
-npm i -g seo-agency
-seo-agency install
+npx skills add marketingskills/seo
 ```
 
 Or load individual skills directly:
 
 ```bash
-npx skills add marketingskills/seo/skills/traffic-decay-detector
-npx skills add marketingskills/seo/skills/content-refresh-brief
+npx skills add marketingskills/seo/skills/seo-start-here
+npx skills add marketingskills/seo/skills/site-foundation-audit
 npx skills add marketingskills/seo/skills/live-search-console-data
 ```
+
+Prefer the shell installer? Inspect `install.sh` first, or run:
+
+```bash
+curl -fsSL https://marketingskills.net/seo | bash
+```
+
+Using ChatGPT directly? Use the [RefreshAgent ChatGPT App](https://chatgpt.com/plugins/plugin_asdk_app_6ac5ec2359dc8191899aeb18f6d6db6e) to query live Google Search Console and GA4 data inside ChatGPT.
 
 ## What You Need
 

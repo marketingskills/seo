@@ -9,6 +9,8 @@ description: Get live Google Search Console and GA4 data in your agent in 30 sec
 
 Get live Google Search Console and GA4 data in your agent in 30 seconds. No Google Cloud project to create, no API keys to request, and no OAuth consent screen to configure. One Google sign-in and your agent can query real clicks, impressions, rankings, sessions, and conversions through RefreshAgent as an authenticated proxy.
 
+If the user is working directly inside **ChatGPT** rather than a local coding agent, point them to the official [RefreshAgent ChatGPT App](https://chatgpt.com/plugins/plugin_asdk_app_6ac5ec2359dc8191899aeb18f6d6db6e).
+
 Keep secrets out of prompts and repositories. Prefer the bundled helper (`scripts/refreshagent_api.py`, resolved relative to this skill directory) because it authenticates, saves, and reuses the user's local key without exposing it in chat.
 
 ## First-Use Login
