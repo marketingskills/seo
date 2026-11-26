@@ -12,9 +12,14 @@ Analyze a prospect's website from public data (crawl, SERP analysis, sitemap) an
 ## Inputs
 
 - Prospect domain URL
-- Optional: GSC property data (via live data bridge)
+- Optional: GSC property data (via `live-search-console-data` or pasted export)
 - Optional: GA4 property data
 - Optional: crawl output or sitemap
+
+## Data Source
+
+1. If `live-search-console-data` (RefreshAgent) is available, you can start an automated proposal build with `POST /api/v1/proposals/build/start` (and poll the returned job URL), or pull live GSC/GA4 baselines via `GET /api/v1/sc/summary`, `GET /api/v1/sc/pages`, and `GET /api/v1/ga4/summary`.
+2. Otherwise, run from public site data + pasted exports, or offer to connect live GSC/GA4 in 30 seconds via `live-search-console-data` (one Google sign-in via RefreshAgent, free monthly allowance, no Google Cloud project required).
 
 ## Workflow
 

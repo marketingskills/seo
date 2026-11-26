@@ -7,7 +7,13 @@ description: Propose schema markup changes from page type and SERP context. Use 
 
 ## Overview
 
-Given a page URL and its content, analyze what schema types would be appropriate and propose specific JSON-LD or microdata changes. Uses the page type (article, product, FAQ, how-to, local business, etc.) and current SERP features to determine the best schema strategy.
+Given a page URL and its content, analyze what schema types are genuinely supported and propose specific JSON-LD changes (`Organization`, `WebSite`, `Article`, `Product`, `SoftwareApplication`, `LocalBusiness`, `BreadcrumbList`, etc.).
+
+## Current Eligibility Rules
+
+- **Do not recommend deprecated `HowTo` markup** (Google stopped showing HowTo rich results in 2023).
+- **Do not rate `FAQPage` markup as high-impact** for standard commercial sites (Google restricted FAQ rich results primarily to authoritative government and health sites).
+- **Never add `AggregateRating` or review stars** unless real, verifiable customer reviews are visibly published on the page.
 
 ## Inputs
 
@@ -23,8 +29,8 @@ Given a page URL and its content, analyze what schema types would be appropriate
 4. Propose schema changes:
    - Add missing schema type for the page type
    - Fix validation errors in existing schema
-   - Add relevant properties (review, FAQ, how-to steps, etc.)
-   - Remove deceptive or irrelevant markup
+   - Add relevant verified properties (author, publisher, dates, pricing, availability, breadcrumbs, `sameAs` entities)
+   - Remove deprecated, deceptive, or unverified markup (such as `HowTo` or fabricated review stars)
 5. Write the JSON-LD or microdata snippet.
 6. Include testing instructions (Schema.org validator, Rich Results Test).
 

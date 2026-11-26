@@ -23,9 +23,9 @@ curl -fsSL https://newsjack.sh | bash
 curl -fsSL marketingskills.net/seo | bash
 ```
 
-## RefreshAgent — Live data bridge
+## RefreshAgent: optional live GSC/GA4 bridge
 
-The `live-search-console-data` skill in this repo connects your agent to live Google Search Console and GA4 data. It's the paid substrate — free tier includes a monthly allowance, upgrade at [refreshagent.com/plans](https://refreshagent.com/plans) for unlimited requests.
+The bundled `live-search-console-data` skill connects your agent to live Google Search Console and GA4 data through [RefreshAgent](https://refreshagent.com/?utm_source=marketingskills_seo) in 30 seconds with one Google sign-in, skipping Google Cloud project and OAuth setup. Every skill in this repo still works with pasted exports. RefreshAgent includes a free monthly allowance, with higher limits at [refreshagent.com/plans](https://refreshagent.com/plans/?utm_source=marketingskills_seo).
 
 ## Keeping skills focused
 

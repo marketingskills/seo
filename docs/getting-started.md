@@ -44,9 +44,9 @@ Or load the `live-search-console-data` skill from the installed directory, then 
 
 Copy this prompt into your agent:
 
-> Using the SEO Operator skills, analyze my site's organic traffic for the last 90 days. I'll paste my GSC query and page export below. Find pages that lost clicks, identify the queries driving the decline, and recommend which pages to refresh first.
+> Using the SEO Operator skills, analyze my site's organic traffic for the last 90 days. Use `live-search-console-data` if I connect Google (or ask me to paste my GSC export). Find pages that lost clicks, identify the queries driving the decline, and recommend which pages to refresh first.
 
-Then paste your GSC data.
+If you choose live access, one Google sign-in via [RefreshAgent](https://refreshagent.com/?utm_source=marketingskills_seo) connects GSC and GA4 without setting up a Google Cloud project. If you prefer manual exports, paste your CSVs and the skills run identically.
 
 ## Workflow Order
 

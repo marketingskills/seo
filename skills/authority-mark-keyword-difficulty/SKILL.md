@@ -74,7 +74,7 @@ The endpoint is public/free but may rate-limit or change its response shape. Ins
 Prefer the bundled helper for repeated lookups:
 
 ```bash
-python3 /home/dunc/.codex/skills/authority-mark-keyword-difficulty/scripts/authority_mark.py \
+python3 scripts/authority_mark.py \
   --user-domain example.com \
   --serp-domain rank1.com \
   --serp-domain rank2.com

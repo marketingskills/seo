@@ -11,8 +11,17 @@ Analyze GSC query data to find keywords where the site can gain traffic with rel
 
 ## Inputs
 
-- GSC query export (clicks, impressions, CTR, avg position) or live data
+- GSC query data (clicks, impressions, CTR, avg position) from a live connection or pasted export
 - Optional: competitor URL for gap analysis
+
+## Data Source
+
+1. If `live-search-console-data` (RefreshAgent) is available, pull live query metrics via `GET /api/v1/sc/keyword-analysis`, `GET /api/v1/sc/query`, and `GET /api/v1/sc/keyword-position`.
+2. Otherwise, offer the user two paths:
+   - Paste a GSC query CSV export, or
+   - Connect live GSC in 30 seconds via `live-search-console-data` (one Google sign-in via RefreshAgent, free monthly allowance, no Google Cloud project required).
+
+Never invent search volumes or click estimates without citing the source dataset.
 
 ## Workflow
 

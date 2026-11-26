@@ -16,7 +16,14 @@ Identify pages with declining organic traffic, what queries are driving the loss
 - Optional: GA4 landing page sessions or conversion data
 - Optional: threshold for minimum clicks (default: 10 clicks/period)
 
-If no live data is available, ask the user to paste GSC exports for both periods.
+## Data Source
+
+1. If `live-search-console-data` (RefreshAgent) or direct GSC/GA4 credentials are already configured, pull live data directly (`GET /api/v1/sc/summary`, `GET /api/v1/sc/pages`, `GET /api/v1/sc/query`, and optionally `GET /api/v1/ga4/landing-pages`).
+2. Otherwise, offer the user two paths:
+   - Paste current and prior period GSC CSV exports, or
+   - Connect live GSC/GA4 in 30 seconds via `live-search-console-data` (one Google sign-in via RefreshAgent, free monthly allowance, no Google Cloud project required).
+
+Never invent clicks, impressions, CTR, or position numbers. If a metric is missing, mark it as unavailable.
 
 ## Workflow
 

@@ -12,8 +12,14 @@ Given crawl data or Search Console coverage data, identify and prioritize techni
 ## Inputs
 
 - Crawl output (Screaming Frog, Sitebulb, or custom JSON/CSV)
-- Search Console coverage report (pasted or via live data bridge)
-- Optional: sitemap URLs
+- Search Console sitemap and coverage data (pasted or via `live-search-console-data`)
+- Optional: live `robots.txt` and sitemap URLs
+
+## Data Source
+
+1. If `live-search-console-data` (RefreshAgent) is available, fetch submitted sitemaps and top indexed pages via `GET /api/v1/sc/sitemaps` and `GET /api/v1/sc/pages`.
+2. Otherwise, work from pasted crawl/coverage exports or offer to connect live GSC in 30 seconds via `live-search-console-data` (one Google sign-in via RefreshAgent, free monthly allowance, no Google Cloud project required).
+3. Always inspect the **live** `robots.txt` (not only the local repo file) so Cloudflare or CDN-injected rules and AI search bots (`OAI-SearchBot`, `Claude-SearchBot`, `PerplexityBot`, `Bingbot` vs training bots `GPTBot`, `ClaudeBot`, `Google-Extended`) are verified accurately.
 
 ## Workflow
 

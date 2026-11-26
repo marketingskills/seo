@@ -28,7 +28,7 @@ Surface what matters — technical issues, traffic decay, keyword gaps, cannibal
 | `keyword-opportunity-finder` | High-impression low-CTR terms, striking-distance keywords, topic gaps |
 | `content-decay-monitor-setup` | Saved monitors for recurring decay scans on watched pages/topics |
 | `technical-seo-triage` | Prioritized crawl, indexation, canonical, schema, and internal-link issues |
-| `serp-authority-mark` | Authority Mark method — can your site realistically compete for this keyword? |
+| `authority-mark-keyword-difficulty` | Authority Mark method: can your site realistically compete for this keyword? |
 | `competitor-serp-monitor` | Track competitor new pages, ranking shifts, SERP feature changes |
 | `cannibalization-check` | Query/page overlap with consolidation or differentiation recommendations |
 
@@ -89,7 +89,7 @@ skills/                     # Individual skill directories
   keyword-opportunity-finder/
   content-decay-monitor-setup/
   technical-seo-triage/
-  serp-authority-mark/
+  authority-mark-keyword-difficulty/
   competitor-serp-monitor/
   cannibalization-check/
   content-refresh-brief/
@@ -113,21 +113,20 @@ examples/                   # Anonymized real run artifacts
 
 Each skill is a directory with a `SKILL.md` file that an agent can load directly.
 
-## Works with pasted data, gets better with live GSC/GA4
+## Works with pasted data, faster with live GSC/GA4
 
-All skills work with data you paste in: GSC exports, crawler output, sitemap URLs, public SERPs. For repeatable, always-current analysis, install the live data bridge skill:
+All skills work immediately with data you paste in: GSC exports, crawler output, sitemap URLs, and public SERPs.
+
+If you do not want to export CSVs by hand or spend an hour setting up a Google Cloud project, OAuth consent screen, and service account, the bundled `live-search-console-data` skill connects your agent to live Google Search Console and GA4 in 30 seconds with one Google sign-in via [RefreshAgent](https://refreshagent.com/?utm_source=marketingskills_seo). It includes a free monthly allowance, with paid plans at [refreshagent.com/plans](https://refreshagent.com/plans/?utm_source=marketingskills_seo) for higher limits.
 
 ```bash
+# Install the full bundle (includes live-search-console-data)
 curl -fsSL marketingskills.net/seo | bash
-```
 
-Or add individual skills from the bundle:
-
-```bash
+# Or add an individual skill
 npx skills add marketingskills/seo/skills/traffic-decay-detector
+npx skills add marketingskills/seo/skills/live-search-console-data
 ```
-
-The `live-search-console-data` skill connects your agent to live Google Search Console and GA4 data through RefreshAgent. The free tier includes a monthly allowance. Upgrade at [refreshagent.com/plans](https://refreshagent.com/plans).
 
 ## Example run
 
