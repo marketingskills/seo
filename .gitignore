@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# OS & editors
+.DS_Store
+.idea/
+.vscode/
+*~
+
+# Generated snapshot artifacts
+seo-baseline.json
+seo-current.json
