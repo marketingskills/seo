@@ -60,25 +60,45 @@ If `user_domain` is missing, ask for it before running the analysis.
 
 Use current web results. Search results and DR values are time-sensitive, so do not rely on memory.
 
-## Ahrefs DR API
+## Ahrefs DR API (Free, APIv3 Token Required)
 
-Fetch DR with:
+Ahrefs' `/v3/public/domain-rating-free` endpoint consumes **0 paid API units**, but **requires an Ahrefs APIv3 Bearer token** (`AHREFS_API_KEY`). Unauthenticated calls return `HTTP 403`.
+
+Set the token in the environment (or `~/.config/ahrefs/.env`):
 
 ```bash
-curl "https://api.ahrefs.com/v3/public/domain-rating-free?target=example.com" \
+export AHREFS_API_KEY="your_ahrefs_apiv3_token"
+```
+
+Single lookup (`GET`):
+
+```bash
+curl "https://api.ahrefs.com/v3/public/domain-rating-free?target=example.com&version=dr3" \
+  -H "Authorization: Bearer $AHREFS_API_KEY" \
   -H "Accept: application/json"
 ```
 
-The endpoint is public/free but may rate-limit or change its response shape. Inspect the returned JSON and extract the domain rating field. If the API fails for some domains, mark those rows as unavailable and do not invent DR values.
+Batch lookup (`POST`, up to 1,000 targets in one request — preferred for top-10 SERPs):
 
-Prefer the bundled helper for repeated lookups:
+```bash
+curl -X POST "https://api.ahrefs.com/v3/public/domain-rating-free" \
+  -H "Authorization: Bearer $AHREFS_API_KEY" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{"targets": ["yourdomain.com", "rank1.com", "rank2.com"], "version": "dr3"}'
+```
+
+Prefer the bundled helper, which uses `POST` batching by default (with automatic `GET` fallback) and reads `AHREFS_API_KEY`:
 
 ```bash
 python3 scripts/authority_mark.py \
   --user-domain example.com \
   --serp-domain rank1.com \
-  --serp-domain rank2.com
+  --serp-domain rank2.com \
+  --version dr3
 ```
+
+Pass `--version dr4` if you want Ahrefs' DR4 model. If `AHREFS_API_KEY` is missing or the API fails for some domains, report the exact error or mark rows as unavailable and never invent DR values. When displaying DR publicly, include attribution (`Domain Rating by Ahrefs`, linking to `https://ahrefs.com/`) per Ahrefs' `domain-rating-license`.
 
 The helper expects already-extracted SERP domains. It does not perform web search.
 

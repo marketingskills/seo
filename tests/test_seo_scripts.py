@@ -10,10 +10,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "skills/site-foundation-audit/scripts"))
 sys.path.insert(0, str(ROOT / "skills/seo-change-monitor/scripts"))
+sys.path.insert(0, str(ROOT / "skills/authority-mark-keyword-difficulty/scripts"))
 sys.path.insert(0, str(ROOT / "hooks"))
 
 import site_foundation_check as sfc  # noqa: E402
 import seo_snapshot as snap  # noqa: E402
+import authority_mark as am  # noqa: E402
 import seo_guard as guard  # noqa: E402
 
 
@@ -147,6 +149,47 @@ class SeoGuardHookTests(unittest.TestCase):
             guard.evaluate_hook_payload({"tool_name": "Write", "tool_input": {"file_path": "drafts/post.md", "content": "# Helpful guide"}}),
             [],
         )
+
+
+class AuthorityMarkTests(unittest.TestCase):
+    def test_parse_batch_post_response_and_compute_authority_mark(self) -> None:
+        payload = {
+            "domain_rating": {
+                "license": "https://ahrefs.com/legal/domain-rating-license",
+                "targets": [
+                    {"target": "mysite.com", "domain_rating": 34.0},
+                    {"target": "bigsite.com", "domain_rating": 78.0},
+                    {"target": "smallblog.com", "domain_rating": 21.0},
+                ],
+            }
+        }
+        ratings, license_url = am.parse_batch_response(payload)
+        self.assertEqual(license_url, "https://ahrefs.com/legal/domain-rating-license")
+        self.assertEqual(ratings["mysite.com"].dr, 34.0)
+        self.assertEqual(ratings["smallblog.com"].dr, 21.0)
+
+        report = am.build_report("mysite.com", ["bigsite.com", "smallblog.com"], ratings, version="dr3", license_url=license_url)
+        self.assertEqual(report["authority_mark"]["rank"], 2)
+        self.assertEqual(report["authority_mark"]["domain"], "smallblog.com")
+        self.assertEqual(report["rows"][0]["comparison"], "higher")
+        self.assertEqual(report["rows"][1]["comparison"], "lower")
+
+    def test_single_get_response_parsing(self) -> None:
+        payload = {"domain_rating": {"domain_rating": 92.0, "license": "http://ahrefs.com/legal/domain-rating-license"}}
+        self.assertEqual(am.find_dr(payload), 92.0)
+        self.assertEqual(am.find_license(payload), "http://ahrefs.com/legal/domain-rating-license")
+
+    def test_missing_api_key_exits_cleanly(self) -> None:
+        old = os.environ.pop("AHREFS_API_KEY", None)
+        old_files = am.DEFAULT_ENV_FILES
+        am.DEFAULT_ENV_FILES = ()
+        try:
+            code = am.main(["--user-domain", "mysite.com", "--serp-domain", "rank1.com"])
+            self.assertEqual(code, 2)
+        finally:
+            am.DEFAULT_ENV_FILES = old_files
+            if old is not None:
+                os.environ["AHREFS_API_KEY"] = old
 
 
 if __name__ == "__main__":
